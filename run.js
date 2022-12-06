@@ -11,7 +11,7 @@ function run(argv) {
 	const items = convertEntriesToWorkspaces(entries)
 		.map((w) => convertWorkspaceToItem(w, query))
 		.sort((i1, i2) => i2.score - i1.score)
-		.slice(0, 4);
+		.slice(0, 5);
 
 	return JSON.stringify({ items: items });
 }
