@@ -83,6 +83,8 @@ function getWorkspaceEnvironment(uri) {
 }
 
 function calculateScore(title, query) {
+	if (query == "") return 0;
+
 	const intersection = intersect(title.toLowerCase(), query.toLowerCase()).length * query.length;
 	const differenceWithQuery = (title.length - intersection) * query.length * 0.7;
 
