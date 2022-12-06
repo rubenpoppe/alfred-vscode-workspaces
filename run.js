@@ -8,11 +8,9 @@ function run(argv) {
 	const { entries } = JSON.parse(argv[0]);
 	const query = argv[1] || "";
 
-	console.log(query);
-
 	const items = convertEntriesToWorkspaces(entries)
 		.map((w) => convertWorkspaceToItem(w, query))
-		.sort((w1, w2) => w2.score - w1.score)
+		.sort((i1, i2) => i2.score - i1.score)
 		.slice(0, 4);
 
 	return JSON.stringify({ items: items });
@@ -33,7 +31,7 @@ function convertWorkspaceToItem(w, query) {
 		title: title,
 		subtitle: subtitle,
 		arg: `${w.isWorkspaceFile || w.env !== "Local" ? `${w.path},--file-uri` : `${w.relativePath},--folder-uri`}`,
-		score: calculateScore(w, query),
+		score: calculateScore(title, query),
 	};
 }
 
@@ -84,9 +82,9 @@ function getWorkspaceEnvironment(uri) {
 	}
 }
 
-function calculateScore(workspace, query) {
-	const intersection = intersect(workspace.folderName.toLowerCase(), query.toLowerCase()).length * query.length;
-	const differenceWithQuery = (workspace.folderName.length - intersection) * query.length * 0.7;
+function calculateScore(title, query) {
+	const intersection = intersect(title.toLowerCase(), query.toLowerCase()).length * query.length;
+	const differenceWithQuery = (title.length - intersection) * query.length * 0.7;
 
 	return 100 - differenceWithQuery + intersection;
 }
