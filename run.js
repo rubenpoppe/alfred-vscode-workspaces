@@ -38,6 +38,7 @@ function convertWorkspaceToItem(w, query) {
 		subtitle: subtitle,
 		arg: `${w.isWorkspaceFile || w.env !== "Local" ? `${w.path},--file-uri` : `${w.relativePath},--folder-uri`}`,
 		score: score,
+		autocomplete: title,
 	};
 }
 
