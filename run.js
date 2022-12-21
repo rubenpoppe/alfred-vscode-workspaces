@@ -28,7 +28,7 @@ function convertWorkspaceToItem(w, query) {
 	subtitle += `: ${w.relativePath}`;
 
 	let score;
-	if (query != "") {
+	if (query !== "") {
 		const strippedTitle = title.replace(/[()]/g, "").toLowerCase();
 		score = (strippedTitle.length - levenshtein(strippedTitle, query.toLowerCase())) / strippedTitle.length;
 	}
