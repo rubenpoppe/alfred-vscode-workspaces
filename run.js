@@ -27,7 +27,7 @@ function convertWorkspaceToItem(w, query) {
 	return {
 		title: title,
 		subtitle: subtitle,
-		arg: `${w.isWorkspaceFile || w.env !== "Local" ? `${w.path},--file-uri` : `${w.relativePath},--folder-uri`}`,
+		arg: w.isWorkspaceFile || w.env !=="Local" ? [w.path, "--file-uri"]: [w.relativePath, "--folder-uri"],
 		autocomplete: title,
 	};
 }
