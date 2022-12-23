@@ -8,10 +8,7 @@ function run(argv) {
 	const { entries } = JSON.parse(argv[0]);
 	const query = argv[1] || "";
 
-	const items = convertEntriesToWorkspaces(entries)
-		.map((w) => convertWorkspaceToItem(w, query))
-		.sort((i1, i2) => i2.score - i1.score)
-		.slice(0, 5);
+	const items = convertEntriesToWorkspaces(entries).map((w) => convertWorkspaceToItem(w, query));
 
 	return JSON.stringify({ items: items });
 }
@@ -31,7 +28,7 @@ function convertWorkspaceToItem(w, query) {
 		title: title,
 		subtitle: subtitle,
 		arg: `${w.isWorkspaceFile || w.env !== "Local" ? `${w.path},--file-uri` : `${w.relativePath},--folder-uri`}`,
-		score: calculateScore(title, query),
+		autocomplete: title,
 	};
 }
 
@@ -80,17 +77,4 @@ function getWorkspaceEnvironment(uri) {
 		default:
 			return;
 	}
-}
-
-function calculateScore(title, query) {
-	if (query == "") return 0;
-
-	const intersection = intersect(title.toLowerCase(), query.toLowerCase()).length * query.length;
-	const differenceWithQuery = (title.length - intersection) * query.length * 0.7;
-
-	return 100 - differenceWithQuery + intersection;
-}
-
-function intersect(a, b) {
-	return [...new Set(a)].filter((x) => new Set(b).has(x));
 }
